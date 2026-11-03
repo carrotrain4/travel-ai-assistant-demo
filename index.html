@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="基于 Coze 思路搭建的人在旅途 AI 小助手交互式 Demo：主 Agent 路由天气、Pose、语音故事、穿搭灵感与朋友圈文案五类子工作流。">
+  <meta name="theme-color" content="#f8f2e8">
+  <title>去野 · 人在旅途 AI 小助手</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sun-glow" aria-hidden="true"></div>
+  <div class="sea-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="返回页面顶部">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 42 42" fill="none">
+          <circle cx="21" cy="21" r="16.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M7 21h28M21 4.5c4.3 4.2 6.5 9.7 6.5 16.5S25.3 33.3 21 37.5C16.7 33.3 14.5 27.8 14.5 21S16.7 8.7 21 4.5Z" stroke="currentColor" stroke-width="1.2" opacity=".55"/>
+          <path d="m26.8 13.6-3.5 8.1-8.1 3.5 3.5-8.1 8.1-3.5Z" fill="currentColor"/>
+          <circle cx="32.8" cy="9.3" r="3.6" fill="#ec7653"/>
+        </svg>
+      </span>
+      <span class="brand-copy"><strong>去野</strong><small>WANDERLUST AI</small></span>
+    </a>
+
+    <nav class="main-nav" aria-label="页面导航">
+      <a href="#demo" class="active">旅途助手</a>
+      <a href="#capabilities">能力地图</a>
+      <a href="#architecture">Coze 编排</a>
+    </nav>
+
+    <div class="header-actions">
+      <span class="status-pill"><i></i>TRIP AGENT ONLINE</span>
+      <span class="project-tag">PROJECT 04</span>
+    </div>
+  </header>
+
+  <main class="page-shell" id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span>04</span><i></i>YOUR COMPANION ON THE ROAD</div>
+        <h1>人在旅途，<br><em>所有小问题都有人接住。</em></h1>
+        <p>一个基于 Coze 多工作流思路搭建的 AI 旅行搭子：主调用 Agent 识别意图，把请求路由给天气、Pose、语音故事、穿搭与文案子工作流。让出发前的准备和路上的时光，都更松弛一点。</p>
+        <div class="hero-tags">
+          <span><i></i>主 Agent 意图路由</span>
+          <span><i></i>5 类子工作流</span>
+          <span><i></i>循环 / 大模型 / 代码节点</span>
+          <span><i></i>旅行场景体验</span>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="postcard-art">
+          <svg viewBox="0 0 520 310" fill="none">
+            <defs>
+              <linearGradient id="sky" x1="260" y1="0" x2="260" y2="310" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f7cfb0"/>
+                <stop offset=".48" stop-color="#f5b792"/>
+                <stop offset="1" stop-color="#e8896e"/>
+              </linearGradient>
+              <linearGradient id="water" x1="260" y1="168" x2="260" y2="310" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#286f78"/>
+                <stop offset="1" stop-color="#0d4854"/>
+              </linearGradient>
+              <linearGradient id="mountain" x1="80" y1="168" x2="410" y2="63" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#4e7775"/>
+                <stop offset="1" stop-color="#2e5c61"/>
+              </linearGradient>
+              <filter id="soft"><feGaussianBlur stdDeviation="9"/></filter>
+            </defs>
+            <rect width="520" height="310" rx="28" fill="url(#sky)"/>
+            <circle cx="382" cy="107" r="43" fill="#ffe2a3" opacity=".9"/>
+            <circle cx="382" cy="107" r="62" fill="#ffd386" opacity=".16" filter="url(#soft)"/>
+            <path d="M0 170 67 112l40 27 49-70 71 71 44-45 85 91 41-40 96 75v82H0v-133Z" fill="url(#mountain)"/>
+            <path d="m78 140 29-28 29 26-17-5-12 9-12-12-17 10Z" fill="#dbe6da" opacity=".66"/>
+            <path d="m226 113 22-35 27 27-14-4-13 10-10-8-12 10Z" fill="#dfe9dd" opacity=".58"/>
+            <path d="M0 190c94-27 169 12 264-7 86-17 171-5 256 22v105H0V190Z" fill="url(#water)"/>
+            <path d="M58 222c42-9 78 5 114-2M338 236c40-10 81-6 120 2M139 267c51-8 94 7 141 0M300 281c35-6 67-3 100 2" stroke="#a6d6d2" stroke-width="2" opacity=".3" stroke-linecap="round"/>
+            <path d="M0 297c94-21 172-12 258-2 101 11 185-12 262-26v41H0v-13Z" fill="#f2d0a8" opacity=".82"/>
+            <path d="M86 300c67-35 128-38 198-17 48 14 98 10 158-8" stroke="#b88e6d" stroke-width="2" opacity=".7" stroke-linecap="round"/>
+            <g transform="translate(251 213)">
+              <circle cx="0" cy="-32" r="7" fill="#173d42"/>
+              <path d="M-6-23c17-4 27 5 27 24v24H-2l-2-24-12 30h-11l11-31c-3-9 4-19 10-23Z" fill="#183e43"/>
+              <path d="M-15-12c-10 5-15 15-19 26M23-9c9 5 15 13 20 21" stroke="#183e43" stroke-width="4" stroke-linecap="round"/>
+              <path d="m-2 25-4 24M14 25l8 23" stroke="#183e43" stroke-width="5" stroke-linecap="round"/>
+              <path d="M-8 26h12M9 26h11" stroke="#f2d3ad" stroke-width="2" stroke-linecap="round"/>
+            </g>
+            <g fill="#ffefd1" opacity=".78">
+              <circle cx="72" cy="45" r="2"/><circle cx="116" cy="70" r="1.5"/><circle cx="170" cy="37" r="1.8"/><circle cx="300" cy="53" r="1.4"/>
+            </g>
+          </svg>
+          <div class="postcard-copy">
+            <span>DALI · CHINA</span>
+            <strong>去有风的地方</strong>
+            <small>25°41′N · 100°09′E</small>
+          </div>
+          <div class="postcard-stamp">去<br>野</div>
+        </div>
+        <div class="hero-metrics">
+          <div><strong>5+</strong><span>旅行子工作流</span></div>
+          <div><strong>1</strong><span>主调用 Agent</span></div>
+          <div><strong>&lt;2s</strong><span>平均响应</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section" id="demo" aria-labelledby="demoTitle">
+      <div class="section-heading">
+        <div><span class="section-kicker">01 / ON THE ROAD</span><h2 id="demoTitle">你的大理旅途控制台</h2></div>
+        <div class="heading-note"><span class="live-dot"></span>主 Agent 已就绪 · 所有回复均为演示数据</div>
+      </div>
+
+      <div class="travel-app">
+        <aside class="trip-panel" aria-label="当前行程">
+          <div class="trip-cover">
+            <div class="trip-cover-top"><span>YOUR NEXT STOP</span><span class="trip-weather">☼ 24°C</span></div>
+            <h3>大理</h3>
+            <p>苍山洱海 · 4 天 3 晚</p>
+            <div class="trip-meta"><span>04.18 — 04.21</span><span>2 TRAVELERS</span></div>
+            <svg class="cover-line" viewBox="0 0 320 90" fill="none" aria-hidden="true">
+              <path d="M0 77 49 47l26 14 33-29 29 20 35-38 31 30 28-14 42 31 47-27" stroke="#acd8cc" stroke-width="1.4" opacity=".45"/>
+              <path d="M13 80C88 67 132 73 185 58c55-15 87-9 121-28" stroke="#f1b181" stroke-width="1.2" stroke-dasharray="4 5" opacity=".7"/>
+              <circle cx="13" cy="80" r="3" fill="#f5bc83"/><circle cx="306" cy="30" r="3" fill="#f5bc83"/>
+            </svg>
+          </div>
+
+          <div class="trip-stats">
+            <div><strong>4</strong><span>DAYS</span></div>
+            <div><strong>3</strong><span>NIGHTS</span></div>
+            <div><strong>68%</strong><span>PACKED</span></div>
+          </div>
+
+          <div class="trip-block">
+            <div class="block-head"><span>ITINERARY</span><strong>行程脉络</strong></div>
+            <div class="mini-timeline">
+              <div class="timeline-item active"><span>01</span><div><strong>大理古城</strong><small>抵达 · 人民路晚餐</small></div><em>04.18</em></div>
+              <div class="timeline-item"><span>02</span><div><strong>环洱海</strong><small>海西 → 双廊 → 日落</small></div><em>04.19</em></div>
+              <div class="timeline-item"><span>03</span><div><strong>苍山与喜洲</strong><small>索道 · 古镇慢游</small></div><em>04.20</em></div>
+              <div class="timeline-item"><span>04</span><div><strong>返程</strong><small>带走一块喜洲粑粑</small></div><em>04.21</em></div>
+            </div>
+          </div>
+
+          <div class="trip-block checklist-block">
+            <div class="block-head"><span>PACKING LIST</span><strong>行李清单</strong><em>8 / 12</em></div>
+            <div class="packing-bar"><i></i></div>
+            <div class="packing-tags"><span>防晒</span><span>薄外套</span><span>舒适鞋</span><span>相机</span></div>
+          </div>
+
+          <div class="trip-note">
+            <span class="note-sun">☼</span>
+            <div><strong>今日旅伴提醒</strong><p>大理昼夜温差约 8°C，环洱海记得带一件能挡风的外套。</p></div>
+          </div>
+        </aside>
+
+        <section class="assistant-panel" aria-label="旅途 AI 助手">
+          <header class="chat-header">
+            <div class="assistant-profile">
+              <span class="bot-avatar">
+                <svg viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="12.5" fill="currentColor" opacity=".15"/><path d="M10.5 14.5c0-4 2.9-7 6.5-7s6.5 3 6.5 7v5.2c0 3.2-2.9 5.8-6.5 5.8s-6.5-2.6-6.5-5.8v-5.2Z" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="16" r="1" fill="currentColor"/><circle cx="20" cy="16" r="1" fill="currentColor"/><path d="M14.5 20c1.5 1 3.5 1 5 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M8.5 12.5c-2.3.8-3.6 3.3-3 5.6M25.5 12.5c2.3.8 3.6 3.3 3 5.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/></svg>
+              </span>
+              <div><strong>小旅伴 <span>AI</span></strong><small><i></i>在线 · 主调用 Agent 已就绪</small></div>
+            </div>
+            <div class="chat-top-actions">
+              <span class="mode-label">COZE ROUTER</span>
+              <button class="clear-btn" id="clearTravelChat" type="button" title="重新开始对话" aria-label="重新开始对话">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13"/></svg>
+              </button>
+            </div>
+          </header>
+
+          <div class="chat-scroll" id="chatMessages" aria-live="polite">
+            <div class="message assistant welcome-message">
+              <span class="message-avatar">AI</span>
+              <div class="message-main">
+                <div class="message-meta"><strong>小旅伴</strong><span>刚刚</span><em>MAIN AGENT</em></div>
+                <div class="message-bubble">
+                  <p>嘿，欢迎来到大理。我已经把天气、拍照灵感、穿搭和路上的故事都装进背包了。</p>
+                  <p>你可以直接问我，或者点下面的任意一张旅行卡。我会自动把请求交给最合适的子 Agent。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-actions" id="quickActions" aria-label="快捷旅行能力">
+            <button type="button" class="quick-action" data-intent="weather"><span class="qa-icon sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></svg></span><span><strong>明日天气</strong><small>大理 · 4/19</small></span><i>↗</i></button>
+            <button type="button" class="quick-action" data-intent="pose"><span class="qa-icon coral"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3.5" y="6" width="17" height="13" rx="2.5"/><circle cx="12" cy="12.5" r="3.2"/><path d="M8 6 9.5 3.5h5L16 6"/></svg></span><span><strong>拍个 Pose</strong><small>洱海出片灵感</small></span><i>↗</i></button>
+            <button type="button" class="quick-action" data-intent="story"><span class="qa-icon mint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 10v4M8.5 7v10M12 4v16M15.5 8v8M19 10v4"/></svg></span><span><strong>听个故事</strong><small>语音慢慢讲</small></span><i>↗</i></button>
+            <button type="button" class="quick-action" data-intent="outfit"><span class="qa-icon sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m9 4-5 3 2 4 2-1v10h8V10l2 1 2-4-5-3a4 4 0 0 1-6 0Z"/></svg></span><span><strong>今天穿什么</strong><small>3 套大理穿搭</small></span><i>↗</i></button>
+            <button type="button" class="quick-action" data-intent="copy"><span class="qa-icon plum"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 5.5h14v13H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4"/></svg></span><span><strong>朋友圈文案</strong><small>把风装进文字里</small></span><i>↗</i></button>
+            <button type="button" class="quick-action" data-intent="itinerary"><span class="qa-icon olive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6.5 9 4l6 2.5L20 4v13.5L15 20l-6-2.5L4 20V6.5Z"/><path d="M9 4v13.5M15 6.5V20"/></svg></span><span><strong>帮我排行程</strong><small>4 天 3 晚松弛版</small></span><i>↗</i></button>
+          </div>
+
+          <form class="composer" id="chatForm">
+            <textarea id="travelInput" rows="2" placeholder="想去哪儿、想做什么？例如：帮我把环洱海安排得松弛一点" aria-label="输入旅行需求"></textarea>
+            <div class="composer-bottom">
+              <div class="composer-tools"><span><i></i>主 Agent 自动路由</span><span>天气</span><span>Pose</span><span>语音</span><span>文案</span></div>
+              <div class="send-wrap"><span>Enter 发送</span><button class="send-button" id="sendButton" type="submit" aria-label="发送"><span>出发</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m4 12 15-7-4.8 14-3-5.4L4 12Z"/><path d="m11.2 13.6 3-3"/></svg></button></div>
+            </div>
+          </form>
+        </section>
+
+        <aside class="route-panel" aria-label="Coze 主 Agent 路由">
+          <div class="route-head">
+            <div><span class="micro-label">COZE ORCHESTRATION</span><h3>主 Agent 路由</h3></div>
+            <span class="route-live" id="routeStatus"><i></i>READY</span>
+          </div>
+
+          <div class="route-main">
+            <div class="main-node" id="mainAgentNode">
+              <span class="node-spark">✦</span>
+              <div><small>MAIN AGENT</small><strong>小旅伴 Router</strong><em id="currentIntent">等待意图</em></div>
+              <span class="node-signal"></span>
+            </div>
+            <div class="route-connector">
+              <svg viewBox="0 0 300 38" preserveAspectRatio="none" aria-hidden="true"><path d="M150 0v12M150 12H46v26M150 12h104v26M150 12v26" stroke="currentColor" stroke-width="1" stroke-dasharray="3 4"/></svg>
+            </div>
+            <div class="subagent-grid" aria-label="子工作流">
+              <div class="subagent" data-agent="weather"><span>☼</span><div><strong>天气</strong><small>weather.flow</small></div><i></i></div>
+              <div class="subagent" data-agent="pose"><span>◉</span><div><strong>Pose</strong><small>pose.flow</small></div><i></i></div>
+              <div class="subagent" data-agent="story"><span>♫</span><div><strong>故事</strong><small>story.voice</small></div><i></i></div>
+              <div class="subagent" data-agent="outfit"><span>◇</span><div><strong>穿搭</strong><small>outfit.flow</small></div><i></i></div>
+              <div class="subagent" data-agent="copy"><span>✎</span><div><strong>文案</strong><small>copy.flow</small></div><i></i></div>
+              <div class="subagent" data-agent="itinerary"><span>⌁</span><div><strong>行程</strong><small>planner.flow</small></div><i></i></div>
+            </div>
+          </div>
+
+          <div class="route-meta">
+            <span>本次路由 <b id="routeLatency">—</b></span>
+            <span class="route-badge">LOOP + LLM + CODE</span>
+          </div>
+
+          <div class="route-log-head"><span>ROUTING TRACE</span><i></i></div>
+          <div class="route-log" id="routeLog">
+            <div class="route-empty">等待一次旅行请求，主 Agent 会在这里留下路由轨迹。</div>
+          </div>
+
+          <div class="tool-box">
+            <div class="tool-title"><span>AVAILABLE TOOLS</span><em>online</em></div>
+            <div class="tool-chips">
+              <span>weather.api</span><span>image.gen</span><span>tts.voice</span><span>knowledge.search</span><span>copywriter.llm</span><span>maps.route</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="capabilities-section" id="capabilities" aria-labelledby="capabilitiesTitle">
+      <div class="section-heading">
+        <div><span class="section-kicker">02 / TRAVEL CAPABILITIES</span><h2 id="capabilitiesTitle">一次旅程，六条工作流</h2></div>
+        <div class="heading-note">主 Agent 负责理解与分发，子工作流各司其职</div>
+      </div>
+      <div class="capability-grid">
+        <article class="capability-card weather-card">
+          <div class="capability-top"><span class="cap-num">01</span><span class="cap-icon">☼</span></div>
+          <h3>天气与出行节奏</h3>
+          <p>把天气、紫外线、降雨概率翻译成“今天该怎么玩”。</p>
+          <div class="cap-demo"><span>18–25°C</span><span>降雨 20%</span><span>15:00 后环湖</span></div>
+        </article>
+        <article class="capability-card pose-card">
+          <div class="capability-top"><span class="cap-num">02</span><span class="cap-icon">◉</span></div>
+          <h3>Pose 与出片灵感</h3>
+          <p>根据时间、地点与光线，给出可执行的构图和动作建议。</p>
+          <div class="cap-demo"><span>海边回眸</span><span>逆光剪影</span><span>低机位</span></div>
+        </article>
+        <article class="capability-card story-card">
+          <div class="capability-top"><span class="cap-num">03</span><span class="cap-icon">♫</span></div>
+          <h3>语音故事陪伴</h3>
+          <p>把地方传说与旅途心情变成一段可以听见的故事。</p>
+          <div class="cap-demo"><span>风花雪月</span><span>约 45 秒</span><span>可播放</span></div>
+        </article>
+        <article class="capability-card outfit-card">
+          <div class="capability-top"><span class="cap-num">04</span><span class="cap-icon">◇</span></div>
+          <h3>场景化穿搭</h3>
+          <p>按温度、风力和拍照场景，给出配色、单品与行李建议。</p>
+          <div class="cap-demo"><span>清晨保暖</span><span>午后出片</span><span>夜晚防凉</span></div>
+        </article>
+        <article class="capability-card copy-card">
+          <div class="capability-top"><span class="cap-num">05</span><span class="cap-icon">✎</span></div>
+          <h3>朋友圈文案</h3>
+          <p>不止“到此一游”，把旅行里的光线和情绪写成文字。</p>
+          <div class="cap-demo"><span>治愈</span><span>文艺</span><span>搞怪</span></div>
+        </article>
+        <article class="capability-card planner-card">
+          <div class="capability-top"><span class="cap-num">06</span><span class="cap-icon">⌁</span></div>
+          <h3>松弛感行程规划</h3>
+          <p>根据体力、天气与交通，把打卡清单变成真正舒服的旅程。</p>
+          <div class="cap-demo"><span>4 天 3 晚</span><span>少折返</span><span>留白时间</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="architecture-section" id="architecture" aria-labelledby="architectureTitle">
+      <div class="architecture-copy">
+        <span class="section-kicker">03 / HOW IT WORKS</span>
+        <h2 id="architectureTitle">一个主 Agent，<br>串起旅途中的六种需要。</h2>
+        <p>在 Coze 中，主调用 Agent 先识别用户意图，再把任务交给有独立工作流的子 Agent。每个子流程可以按需组合大模型、循环、代码与插件节点，最后把结构化结果统一返回给聊天界面。</p>
+        <div class="coze-tags"><span>主调用 Agent</span><span>意图识别</span><span>Workflow</span><span>LLM Node</span><span>Code Node</span><span>Loop Node</span><span>Plugin</span></div>
+      </div>
+      <div class="architecture-diagram">
+        <div class="arch-node user"><span>YOU</span><strong>一句话需求</strong></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node main"><span>MAIN AGENT</span><strong>意图识别 + 路由</strong><em>context / memory</em></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-fanout">
+          <div><span>☼</span><strong>weather.flow</strong><small>API + LLM</small></div>
+          <div><span>◉</span><strong>pose.flow</strong><small>Image + Code</small></div>
+          <div><span>♫</span><strong>story.flow</strong><small>LLM + TTS</small></div>
+          <div><span>◇</span><strong>outfit.flow</strong><small>Knowledge</small></div>
+          <div><span>✎</span><strong>copy.flow</strong><small>LLM + Loop</small></div>
+          <div><span>⌁</span><strong>planner.flow</strong><small>Maps + Code</small></div>
+        </div>
+        <div class="arch-result"><span>OUTPUT</span><strong>统一返回聊天卡片</strong><em>语音 · 图文 · 行程</em></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-brand"><span>去野</span><strong>WANDERLUST AI</strong></div>
+    <p>人在旅途 AI 小助手 · Coze 多工作流 Demo · 2026</p>
+    <a href="#top">回到顶部 ↑</a>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">此 Demo 需要启用 JavaScript 才能体验 AI 旅行助手。</div></noscript>
+  <script src="app.js"></script>
+</body>
+</html>
